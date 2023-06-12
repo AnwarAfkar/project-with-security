@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        table, th, td {
+            border: solid 1px black;
+            border-collapse: collapse;
+            padding: 10px;
+        }
+
+        .main_table{
+            margin-top: 30px;
+        }
+
+        .navigation{
+            border: 5px outset red;
+            background-color: lightblue;
+            text-align: left;
+            padding: 10px;
+            word-spacing: 10px;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <title>Borrower</title>
+</head>
+<body>
+<p>
+<h2>BORROWER</h2>
+</p>
+<div id="placeholder"></div>
+<div>
+    <a href="/borrower/borrow">BORROW</a>
+    <a href="/">HOME</a>
+</div>
+
+<div>
+    <table>
+        <thead>
+        <tr>
+            <th>MEMBER</th>
+            <th>BOOK</th>
+            <th>CHECKOUT DATE</th>
+            <th>RETURN DATE</th>
+            <th>IS RETURNED?</th>
+            <th>IS DELETED?</th>
+            <th colspan="7">OPERATIONS</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each=" b : ${borrowerList}">
+            <td th:text="${b.getMember().name}"></td>
+            <td th:text="${b.getBook().title}"></td>
+            <td th:text="${#dates.format(b.checkoutDate, 'dd-MM-yyyy')}"></td>
+            <td th:text="${#dates.format(b.returnedDate, 'dd-MM-yyyy')}"></td>
+            <td th:text="${b.returned} ? 'YES' : 'NO'"></td>
+            <td th:text="${b.deleted} ? 'YES' : 'NO'"></td>
+            <td><button th:onclick="returnBook([[${b.id}]])">Return</button></td>
+            <td><button th:onclick="update([[${b.id}]])">Update</button></td>
+            <td><button th:onclick="remove([[${b.id}]])">Delete</button></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script>
+    function update(id){
+        $.ajax({
+            url: '/borrower/update',
+            type: 'get',
+            data: { 'id': id },
+            success: function( data ) {
+                $('#placeholder').html(data);
+            },
+            error: function(result){
+                alert("Error: " + result);
+            }
+        });
+    }
+
+    function remove(id) {
+        $.ajax({
+            url: '/borrower/del',
+            type: 'post',
+            data: {'id': id},
+            success: function (data) {
+                window.location.href = "/borrower";
+            },
+            error: function (result) {
+                alert("Error: " + result);
+            }
+        });
+    }
+    function returnBook(id){
+        $.ajax({
+            url: '/borrower/borrow',
+            type: 'post',
+            data: {'id': id},
+            success: function (data) {
+                window.location.href="/borrower";
+            },
+            error: function (result) {
+                alert("Error: " + result);
+            }
+        });
+    }
+</script>
+
+
+</body>
+</html>

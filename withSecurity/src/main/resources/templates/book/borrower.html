@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Borrow a Book</title>
+</head>
+<body>
+<form name="borrowmemberabook" th:object="${bookBorrowerDTO}" method="post" th:action="@{/book/borrower}">
+    <div class="card">
+        <div class="container">
+            <fieldset>
+                <legend>Borrow:</legend>
+                <input type="hidden" th:value="${bookBorrowerDTO.bookId}" th:name="bookId"/>
+                <table>
+                    <tbody>
+                    <tr>
+                        <td><label>Car Brand</label></td>
+                        <td><label th:text="${bookBorrowerDTO.getBookTitle()}"></label></td>
+                    </tr>
+                    <tr>
+                        <td><label>Member</label></td>
+                        <td>
+                            <select th:field="*{memberId}">
+                                <option
+                                        th:each="member:${bookBorrowerDTO.getmemberList()}"
+                                        th:text="${member.name}"
+                                        th:value="${member.id}">
+                                </option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Checkout date</td>
+                        <td><input type="date" th:field="${bookBorrowerDTO.checkout_Date}"/></td>
+                    </tr>
+                    <tr>
+                        <td>Return date</td>
+                        <td><input type="date" th:field="${bookBorrowerDTO.returned_Date}"/></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button onclick="window.location='/book'; return false;">Cancel</button>
+                        </td>
+                        <td>
+                            <button type="submit">Save</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </fieldset>
+        </div>
+    </div>
+</form>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script>
+    $("input[type=date]").datepicker({ dateFormat: 'dd-mm-yy' });
+</script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Book</title>
+</head>
+<body>
+<form name="delbook" th:object="${book}" method="post" th:action="@{/book/del}">
+    <div class="card">
+        <div class="container">
+            <fieldset>
+                <legend>Book:</legend>
+                <input type="hidden" th:field="*{id}">
+                <table>
+                    <tbody>
+                    <tr>
+                        <td><label>Title</label></td>
+                        <td><input type="text" th:field="*{title}" readonly></td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <button onclick="window.location='/book'; return false;">Cancel</button>
+                        </td>
+                        <td>
+                            <button type="submit">Delete</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </fieldset>
+        </div>
+    </div>
+</form>
+</body>
+</html>

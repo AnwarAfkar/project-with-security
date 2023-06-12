@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book Page</title>
+
+    <style>
+        table, th, td {
+            border: solid 1px black;
+            border-collapse: collapse;
+            padding: 10px;
+        }
+
+        .main_table{
+            margin-top: 30px;
+        }
+
+        .navigation{
+            border: 5px outset red;
+            background-color: lightblue;
+            text-align: left;
+            padding: 10px;
+            word-spacing: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="placeholder"></div>
+
+<div>
+    <h2>BOOKS</h2>
+</div>
+
+<div class="navigation">
+    <a href="/book/add">ADD</a>
+    <a href="/">HOME</a>
+</div>
+
+
+<table class="main_table">
+    <thead>
+    <tr>
+        <th>TITLE</th>
+        <th>AUTHOR</th>
+        <th>PUBLISHER</th>
+        <th>PUBLISH DATE</th>
+        <th colspan="5">OPERATIONS</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="book: ${bookList}">
+        <td th:text="${book.title}"></td>
+        <td th:text="${book.author}"></td>
+        <td th:text="${book.publisher}"></td>
+        <td th:text="${book.datePublish}"></td>
+        <td><button th:onclick="update([[${book.id}]])">UPDATE</button></td>
+        <td><button th:onclick="del([[${book.id}]])">DELETE</button></td>
+        <td><button th:onclick="borrow([[${book.id}]])">BORROW</button></td>
+    </tr>
+    </tbody>
+</table>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script>
+
+    function update(id){
+        $.ajax({
+            url: '/book/update',
+            type: 'get',
+            data: { 'id': id },
+            success: function( data ) {
+                $('#placeholder').html(data);
+            },
+            error: function(result){
+                alert("Error: " + result);
+            }
+        });
+    }
+    function del(id){
+        $.ajax({
+            url: '/book/del',
+            type: 'get',
+            data: { 'id': id },
+            success: function( data ) {
+                $('#placeholder').html(data);
+            },
+            error: function(result){
+                alert("Error: " + result);
+            }
+        });
+    }
+</script>
+</body>
+</html>

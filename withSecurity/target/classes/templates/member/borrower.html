@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Borrow a book</title>
+</head>
+<body>
+<form name="borrowbooktoMember" th:object="${memberBorrowerDTO}" method="post" th:action="@{/member/borrower}">
+  <div class="card">
+    <div class="container">
+      <fieldset>
+        <legend>Borrow:</legend>
+        <input type="hidden" th:value="${memberBorrowerDTO.memberId}" th:name="memberId"/>
+        <table>
+          <tbody>
+          <tr>
+            <td><label>Name</label></td>
+            <td><label th:text="${memberBorrowerDTO.getMemberName()}"></label></td>
+          </tr>
+          <tr>
+            <td><label>Book</label></td>
+            <td>
+              <select th:field="*{bookId}">
+                <option
+                        th:each="book:${memberBorrowerDTO.getBookList()}"
+                        th:text="${book.title}"
+                        th:value="${book.id}">
+                </option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>Checkout date</td>
+            <td><input type="date" th:field="${memberBorrowerDTO.checkout_Date}"/></td>
+          </tr>
+          <tr>
+            <td>Return date</td>
+            <td><input type="date" th:field="${memberBorrowerDTO.return_Date}"/></td>
+          </tr>
+          <tr>
+            <td>
+              <button onclick="window.location='/member'; return false;">Cancel</button>
+            </td>
+            <td>
+              <button type="submit">Save</button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </fieldset>
+    </div>
+  </div>
+</form>
+</body>
+</html>
